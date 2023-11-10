@@ -1,102 +1,71 @@
 package com.zipcodewilmington.phonebook;
 
-import java.util.List;
-import java.util.ArrayList;
-//import java.util.HashMap;
-import java.util.Iterator;
-import java.util.LinkedHashMap;
-import java.util.Map;
+import java.util.*;
+
 
 /**
  * Created by leon on 1/23/18.
  * Made WAY better by kristofer 6/16/20
  */
 public class PhoneBook {
-    private String name;
-    private String phoneNumber;
-    private List<String> phoneNumbers;
 
 
     private final Map<String, List<String>> phonebook;
 
     public PhoneBook(Map<String, List<String>> map) {
-        this.phonebook = null;
+        this.phonebook = map;
     }
 
     public PhoneBook() {
-        this(null);
+        this.phonebook = new LinkedHashMap<>();
     }
 
     public void add(String name, String phoneNumber) {
-        this.name = name;
-        this.phoneNumber = phoneNumber;
+        this.phonebook.put(name, List.of(phoneNumber));
 
     }
 
     public void addAll(String name, String... phoneNumbers) {
-        this.name = name;
-        this.phoneNumbers = List.of(phoneNumbers);
+        this.phonebook.put(name, List.of(phoneNumbers));
+
     }
 
-
-
     public void remove(String name) {
-        this.name = name;
-
+        this.phonebook.remove(name);
     }
 
     public Boolean hasEntry(String name) {
-
-        return null;
+        assert phonebook != null;
+        return phonebook.containsKey(name);
     }
 
-    public List<String> lookup(String name) {
+    public Boolean hasEntry(String name, String phoneNumber) {
+        assert phonebook != null;
+        List<String> num = phonebook.get(name);
+        return num.contains(phoneNumber);
+    }
 
-        return null;
+
+    public List<String> lookup(String name) {
+        return phonebook.get(name);
     }
 
     public String reverseLookup(String phoneNumber)  {
-
-        return this.phoneNumber;
+        for (String name : phonebook.keySet()) {
+           if (phonebook.get(name).contains(phoneNumber)) {
+               return name;
+           }
+        }
+        return null;
     }
 
     public List<String> getAllContactNames() {
-
-        return null;
+        return new ArrayList<>(phonebook.keySet());
     }
 
     public Map<String, List<String>> getMap() {
 
-        return null;
-    }
-
-    /*
-    ========================================================
-    ========================================================
-     */
-
-    public String getPhoneNumber() {
-        return phoneNumber;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public void setPhoneNumber(String phoneNumber) {
-        this.phoneNumber = phoneNumber;
-    }
-
-    public List<String> getPhoneNumbers() {
-        return phoneNumbers;
-    }
-
-    public void setPhoneNumbers(List<String> phoneNumbers) {
-        this.phoneNumbers = phoneNumbers;
+        return this.phonebook;
     }
 }
 
